@@ -1,0 +1,1 @@
+The error happens because there can be a possible zero division we can fix this by making an exception for zerodivision
