@@ -9,4 +9,4 @@ for i in filename:
 for e in final_name_list:
     print(e)
     for key,value in seq_bases.items():
-        print(' ', key, ':', value
+        print(' ', key, ':', value)
