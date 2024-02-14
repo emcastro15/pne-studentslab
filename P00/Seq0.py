@@ -77,4 +77,4 @@ def seq_reverse(seq, n):
     return sequence
 
 # exercise 7
-def seq_complement(seq):
+
