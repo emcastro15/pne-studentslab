@@ -64,7 +64,7 @@ def seq_count(seq):
                 dic_bases['G'] += 1
     return dic_bases
 
-# exercise 6:
+# exercise 6
 def seq_reverse(seq, n):
     try:
         with open(seq, 'r') as file:
@@ -75,3 +75,6 @@ def seq_reverse(seq, n):
         print("Error: File", seq, "not found.")
         sequence = None
     return sequence
+
+# exercise 7
+def seq_complement(seq):
