@@ -60,6 +60,6 @@ class Ferrari (Car):
 
 
 mycar = Car("Renault")
-yourcar = Ferrari("Ferrari")
+yourcar = Ferrari()
 print(yourcar.car_brand)
 print(yourcar.make_cabrio(), "and music is", yourcar.music, "and speed", yourcar.speed)
