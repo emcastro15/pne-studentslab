@@ -9,7 +9,7 @@ class Seq:
                 self.strbases = "ERROR"
                 flag = False
             break
-        if strbases= ""
+        if strbases : ""
 
         print("New sequence created!")
 
