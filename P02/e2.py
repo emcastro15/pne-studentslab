@@ -9,8 +9,5 @@ print(f"-----| Practice {PRACTICE}, Exercise {EXERCISE} |------")
 IP = "212.128.255.64" # your server IP address
 PORT = 8081
 
-# -- Create a client object
 c = Client(IP, PORT)
-
-# -- Test the ping method
-c.ping()
+print(c)
