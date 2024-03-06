@@ -77,4 +77,14 @@ def seq_reverse(seq, n):
     return sequence
 
 # exercise 7
-
+def seq_complement(seq):
+    comp = ""
+    for i in seq:
+        if i == "A":
+            comp += "T"
+        elif i == "C":
+            comp += "G"
+        elif i == "G":
+            comp += "C"
+        elif i == "T":
+            comp += "A"
