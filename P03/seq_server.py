@@ -50,7 +50,6 @@ while True:
             print("GET command")
             response = "OK!"
             cs.send(response.encode())
-            if msg[:]
         cs.close()
 
 #you can also do this with the code of techers server, try to understand both (techers is easier)
