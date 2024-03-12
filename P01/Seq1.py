@@ -73,6 +73,7 @@ class Seq:
         return self.strbases
 
 
+
 def print_seqs(seq_list, color):
     for index, seq in enumerate(seq_list):
         seq_str = str(seq)
