@@ -88,3 +88,4 @@ def generate_seqs(pattern, number):
         seq_list.append(seq)
     return seq_list
 
+

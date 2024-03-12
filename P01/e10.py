@@ -31,3 +31,4 @@ print(f"Gene FXN: Most frequent base: {most_frequent_base(s4.count())}")
 s5 = Seq()
 s5.read_fasta("../sequences/RNU6_269P.txt")
 print(f"Gene RNU6_269P: Most frequent base: {most_frequent_base(s5.count())}")
+

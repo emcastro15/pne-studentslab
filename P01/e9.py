@@ -8,3 +8,4 @@ print(f"Sequence 1: (Length: {s.len()}) {s}")
 print(f"Bases: {s.count()}")
 print(f"Reverse: {s.reverse()}")
 print(f"Complement: {s.complement()}")
+

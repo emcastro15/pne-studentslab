@@ -16,3 +16,4 @@ s1.read_fasta("../sequences/U5.txt")
 print("Sending a message to the server...")
 response = c.talk("Testing!!!")
 print(f"Response: {response}")
+

@@ -13,3 +13,4 @@ while True:
         s.connect((IP, PORT))
         s.send(str.encode("HELLO FROM THE CLIENT!!!"))
         s.close()
+

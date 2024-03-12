@@ -20,3 +20,4 @@ s.send(str.encode("HELLO FROM THE CLIENT!!!"))
 
 # Close the socket
 s.close()
+
