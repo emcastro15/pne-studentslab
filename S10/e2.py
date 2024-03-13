@@ -18,6 +18,7 @@ ls.bind((IP, PORT))
 ls.listen()
 
 print("The server is configured!")
+number_connections = 0
 
 while True:
     # -- Waits for a client to connect
@@ -50,6 +51,8 @@ while True:
         msg = msg_raw.decode()
 
         # -- Print the received message
+        number_connections += 1
+        print(f"CONNECTION {number_connections}. Client IP,PORT: {client_ip_port}")
         print(f"Message received: {colored(msg, 'green')}")
 
         # -- Send a response message to the client
@@ -60,4 +63,3 @@ while True:
 
         # -- Close the data socket
         cs.close()
-

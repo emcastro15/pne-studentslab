@@ -1,9 +1,8 @@
 import socket
-from termcolor import colored
 
 # Configure the Server's IP and PORT
-PORT = 8081
-IP = "212.128.254.250"  # the IP address depends on the machine running the server
+PORT = 8080
+IP = "212.128.255.2"  # the IP address depends on the machine running the server
 
 # -- Step 1: create the socket
 ls = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -46,18 +45,19 @@ while True:
         msg_raw = cs.recv(2048)
 
         # -- We decode it for converting it
-        # -- into a human-readable string
+        # -- into a human-redeable string
         msg = msg_raw.decode()
 
         # -- Print the received message
-        print(f"Message received: {colored(msg, 'green')}")
+        print(f"Message received: {msg}")
 
         # -- Send a response message to the client
-        response = f"ECHO: {msg}\n"
+        response = "HELLO. I am the Happy Server :-)\n"
 
         # -- The message has to be encoded into bytes
         cs.send(response.encode())
 
         # -- Close the data socket
         cs.close()
+
 
