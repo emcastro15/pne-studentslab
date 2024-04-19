@@ -1,10 +1,14 @@
 import socket
 import termcolor
-
+from pathlib import Path
 
 # -- Server network parameters
 IP = "127.0.0.1"
 PORT = 8080
+A_HTML = "html/info/A.html"
+C_HTML = "html/info/C.html"
+G_HTML = "html/info/G.html"
+T_HTML = "html/info/T.html"
 
 
 def process_client(s):
@@ -31,23 +35,16 @@ def process_client(s):
     # Body (content to send)
 
     # This new contents are written in HTML language
+    # .split("/")[2].startswith("A")
 
-    if req_line.split("/")[2].startswith("A"):
-        body = """
-      <!DOCTYPE html>
-    <html lang="en" dir="ltr">
-      <head>
-        <meta charset="utf-8">
-        <title>ADENINE</title>
-      </head>
-      <body style="background-color: lightgreen;">
-        <h1>ADENINE</h1>
-        <p>Letter: A</p>
-        <p>Chemical formula: C5H5N5</p>
-      </body> 
-    </html>
-    <a href="https://en.wikipedia.org/wiki/Adenine">More info</a>
-        """
+    if req_line.split(" ")[1] == "/info/A":
+        body = Path(A_HTML).read_text()
+    elif req_line.split(" ")[1] == "/info/C":
+        body = Path(C_HTML).read_text()
+    elif req_line.split(" ")[1] == "/info/G":
+        body = Path(G_HTML).read_text()
+    elif req_line.split(" ")[1] == "/info/T":
+        body = Path(T_HTML).read_text()
     else:
         body = ""
 
