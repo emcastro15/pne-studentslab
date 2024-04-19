@@ -1,11 +1,11 @@
 import socket
 import termcolor
 
-
 # -- Server network parameters
 IP = "127.0.0.1"
 PORT = 8080
 INDEX_HTML = "index.html"
+
 
 def process_client(s):
     # -- Receive the request message
