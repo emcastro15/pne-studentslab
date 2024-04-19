@@ -1,0 +1,17 @@
+1. http://127.0.0.1:8080/hello Which is the request line? which is the resource(the path) that the client is asking for?
+    Method: GET. The client wants some object from the server
+    Resource (Path): What the client wants
+
+    The request line is "GET /hello HTTP/1.1".
+    The resource is "/hello".
+
+2. Repeat the exercise for http://127.0.0.1:8080/file.html
+    The request line is "GET /file.html HTTP/1.1".
+    The resource is "/file.html".
+
+3. Repeat the exercise for http://127.0.0.1:8080/hi/there?name=virus&type=corona
+    The request line is "GET /hi/there?name=virus&type=corona HTTP/1.1".
+    The resource is "/hi/there?name=virus&type=corona".
+
+4. What should be the URL that we have to write in the browser for accessing the /dna/u5 resource?
+    http://127.0.0.1:8080/dna/u5

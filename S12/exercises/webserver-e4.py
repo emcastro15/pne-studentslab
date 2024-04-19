@@ -5,7 +5,7 @@ import termcolor
 # -- Server network parameters
 IP = "127.0.0.1"
 PORT = 8080
-
+INDEX_HTML = "index.html"
 
 def process_client(s):
     # -- Receive the request message
@@ -31,19 +31,9 @@ def process_client(s):
     # Body (content to send)
 
     # This new contents are written in HTML language
-    body = """
-    <!DOCTYPE html>
-    <html lang="en" dir="ltr">
-      <head>
-        <meta charset="utf-8">
-        <title>Green server</title>
-      </head>
-      <body style="background-color: lightgreen;">
-        <h1>GREEN SERVER</h1>
-        <p>I am the Green Server! :-)</p>
-      </body>
-    </html>
-    """
+    with open(INDEX_HTML, 'r') as file:
+        body = file.read()
+
     # -- Status line: We respond that everything is ok (200 code)
     status_line = "HTTP/1.1 200 OK\n"
 
