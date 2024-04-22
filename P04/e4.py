@@ -6,6 +6,9 @@ from pathlib import Path
 IP = "127.0.0.1"
 PORT = 8080
 A_HTML = "html/info/A.html"
+C_HTML = "html/info/C.html"
+G_HTML = "html/info/G.html"
+T_HTML = "html/info/T.html"
 
 
 def process_client(s):
@@ -36,6 +39,12 @@ def process_client(s):
 
     if req_line.split(" ")[1] == "/info/A":
         body = Path(A_HTML).read_text()
+    elif req_line.split(" ")[1] == "/info/C":
+        body = Path(C_HTML).read_text()
+    elif req_line.split(" ")[1] == "/info/G":
+        body = Path(G_HTML).read_text()
+    elif req_line.split(" ")[1] == "/info/T":
+        body = Path(T_HTML).read_text()
     else:
         body = ""
 

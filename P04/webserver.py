@@ -6,6 +6,11 @@ from pathlib import Path
 IP = "127.0.0.1"
 PORT = 8080
 A_HTML = "html/info/A.html"
+C_HTML = "html/info/C.html"
+G_HTML = "html/info/G.html"
+T_HTML = "html/info/T.html"
+ERROR_HTML = "html/error.html"
+INDEX_HTML = "html/index.html"
 
 
 def process_client(s):
@@ -34,10 +39,18 @@ def process_client(s):
     # This new contents are written in HTML language
     # .split("/")[2].startswith("A")
 
-    if req_line.split(" ")[1] == "/info/A":
+    if req_line.split(" ")[1] == "/":
+        body = Path(INDEX_HTML).read_text()
+    elif req_line.split(" ")[1] == "/info/A":
         body = Path(A_HTML).read_text()
+    elif req_line.split(" ")[1] == "/info/C":
+        body = Path(C_HTML).read_text()
+    elif req_line.split(" ")[1] == "/info/G":
+        body = Path(G_HTML).read_text()
+    elif req_line.split(" ")[1] == "/info/T":
+        body = Path(T_HTML).read_text()
     else:
-        body = ""
+        body = Path(ERROR_HTML).read_text()
 
     # -- Status line: We respond that everything is ok (200 code)
     status_line = "HTTP/1.1 200 OK\n"
