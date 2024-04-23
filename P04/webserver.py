@@ -92,7 +92,6 @@ while True:
         ls.close()
         exit()
     else:
-
         # Service the client
         process_client(cs)
 
