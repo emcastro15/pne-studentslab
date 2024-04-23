@@ -1,10 +1,3 @@
-elif self.requestline.split(" ")[1] == "/":
-contents = Path(GREEN_HTML).read_text()
-elif self.requestline.split(" ")[1] == "/":
-contents = Path(BLUE_HTML).read_text()
-elif self.requestline.split(" ")[1] == "/":
-contents = Path(INDEX_HTML).read_text()
-
 import http.server
 import socketserver
 import termcolor
@@ -12,11 +5,7 @@ from pathlib import Path
 
 # Define the Server's port
 PORT = 8080
-BLUE_HTML = "html/blue.html"
-GREEN_HTML = "html/green.html"
-PINK_HTML = "html/pink.html"
-ERROR_HTML = "html/error.html"
-INDEX_HTML = "html/index.html"
+
 
 # -- This is for preventing the error: "Port already in use"
 socketserver.TCPServer.allow_reuse_address = True
@@ -39,10 +28,16 @@ class TestHandler(http.server.BaseHTTPRequestHandler):
         # that everything is ok
 
         # Message to send back to the client
+        request = self.requestline(" ")[1]
         if self.requestline.split(" ")[1] == "/" or self.requestline.split(" ")[1] == "/index.html":
             contents = Path(INDEX_HTML).read_text()
         else:
-            contents = Path(ERROR_HTML).read_text()
+            req_file = self.requestline.lstrip("/")
+            file_path = Path(req_file)
+            if file_path.exists:
+                contents = file_path.read_text()
+            else:
+                contents = Path(ERROR_HTML).read_text()
 
         # Generating the response message
         self.send_response(200)  # -- Status line: OK!
