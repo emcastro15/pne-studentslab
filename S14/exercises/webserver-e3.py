@@ -5,7 +5,8 @@ from pathlib import Path
 
 # Define the Server's port
 PORT = 8080
-
+INDEX_HTML = "html/index.html"
+ERROR_HTML = "html/error.html"
 
 # -- This is for preventing the error: "Port already in use"
 socketserver.TCPServer.allow_reuse_address = True
@@ -22,22 +23,24 @@ class TestHandler(http.server.BaseHTTPRequestHandler):
         # Print the request line
         termcolor.cprint(self.requestline, 'green')
 
-        # IN this simple server version:
-        # We are NOT processing the client's request
-        # It is a happy server: It always returns a message saying
-        # that everything is ok
-
         # Message to send back to the client
-        request = self.requestline(" ")[1]
-        if self.requestline.split(" ")[1] == "/" or self.requestline.split(" ")[1] == "/index.html":
+        resource = self.requestline.split(" ")[1]
+        if resource == "/" or resource == "/index.html":
             contents = Path(INDEX_HTML).read_text()
         else:
-            req_file = self.requestline.lstrip("/")
-            file_path = Path(req_file)
-            if file_path.exists:
-                contents = file_path.read_text()
-            else:
+            html_request = f"html{resource}"
+            html_path = Path(html_request)
+            try:
+                contents = html_path.read_text()
+            except FileNotFoundError:
                 contents = Path(ERROR_HTML).read_text()
+
+            # -- ANOTHER WAY TO DO IT
+            """ 
+            if html_path.exists():
+                contents = html_path.read_text()
+            else:
+                contents = Path(ERROR_HTML).read_text()"""
 
         # Generating the response message
         self.send_response(200)  # -- Status line: OK!
@@ -63,7 +66,6 @@ Handler = TestHandler
 
 # -- Open the socket server
 with socketserver.TCPServer(("", PORT), Handler) as httpd:
-
     print("Serving at PORT", PORT)
 
     # -- Main loop: Attend the client. Whenever there is a new

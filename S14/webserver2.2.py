@@ -32,7 +32,6 @@ class TestHandler(http.server.BaseHTTPRequestHandler):
         print("  Path: " + self.path)
 
         # IN this simple server version:
-        # We are NOT processing the client's request
         # We are NOT generating any response message
         return
 
