@@ -29,17 +29,17 @@ class TestHandler(http.server.BaseHTTPRequestHandler):
 
         if resource == "/":
             # Read the file
-            contents = Path('index.html').read_text()
+            contents = Path('/home/alumnos/emcastro/PycharmProjects/pne-studentslab/S18/index.html').read_text()
             content_type = 'text/html'
             error_code = 200
         elif resource == "/listusers":
             # Read the file
-            contents = Path('example 3/people-3.json').read_text()
+            contents = Path('people-e1.json').read_text()
             content_type = 'application/json'
             error_code = 200
         else:
             # Read the file
-            contents = Path('error.html').read_text()
+            contents = Path('/home/alumnos/emcastro/PycharmProjects/pne-studentslab/S18/error.html').read_text()
             content_type = 'text/html'
             error_code = 404
 
@@ -78,4 +78,3 @@ with socketserver.TCPServer(("", PORT), Handler) as httpd:
         print("")
         print("Stopped by the user")
         httpd.server_close()
-
