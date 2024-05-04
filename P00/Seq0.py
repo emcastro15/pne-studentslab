@@ -15,6 +15,7 @@ def seq_read_fasta(filename):
         sequence = None
     return sequence
 
+
 #exercise 3
 def seq_len(seq, list_seq, list_names):
     sequence = ""
@@ -23,6 +24,7 @@ def seq_len(seq, list_seq, list_names):
         for line in f:
             sequence += line.strip("\n")
     return len(sequence)
+
 
 #exercise 4
 def seq_count_base(seq, base):
@@ -41,6 +43,7 @@ def seq_count_base(seq, base):
             else:
                 pass
     return count_base
+
 
 # exercise 5
 def seq_count(seq):
@@ -64,6 +67,7 @@ def seq_count(seq):
                 dic_bases['G'] += 1
     return dic_bases
 
+
 # exercise 6
 def seq_reverse(seq, n):
     try:
@@ -75,6 +79,7 @@ def seq_reverse(seq, n):
         print("Error: File", seq, "not found.")
         sequence = None
     return sequence
+
 
 # exercise 7
 def seq_complement(seq):
@@ -88,3 +93,16 @@ def seq_complement(seq):
             comp += "C"
         elif i == "T":
             comp += "A"
+    return comp
+
+
+# exercise 8
+def most_frequent_base(counted_bases):
+    # print(counted_bases)
+    highest_numb = 0
+    highest_base = ""
+    for base, number in counted_bases.items():
+        if int(number) > highest_numb:
+            highest_numb = int(number)
+            highest_base = base
+    return highest_base

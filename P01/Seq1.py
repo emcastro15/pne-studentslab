@@ -73,6 +73,15 @@ class Seq:
         return self.strbases
 
 
+def most_frequent_base(counted_bases):
+    # print(counted_bases)
+    highest_numb = 0
+    highest_base = ""
+    for base, number in counted_bases.items():
+        if int(number) > highest_numb:
+            highest_numb = int(number)
+            highest_base = base
+    return highest_base
 
 def print_seqs(seq_list, color):
     for index, seq in enumerate(seq_list):

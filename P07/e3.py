@@ -1,7 +1,7 @@
 import http.client
 import json
 import termcolor
-from e2 import genes
+from genes_dict import genes
 
 SERVER = 'rest.ensembl.org'
 ENDPOINT = f'/sequence/id/{genes["MIR633"]}' # ENSG00000207552
@@ -36,9 +36,9 @@ data1 = r1.read().decode("utf-8")
 response = json.loads(data1)
 
 
-termcolor.cprint("Gene:", 'green', end="")
+termcolor.cprint("Gene: ", 'green', end="")
 print("MIR633")
-termcolor.cprint("Description:", 'green', end="")
+termcolor.cprint("Description: ", 'green', end="")
 print(response['desc'])
-termcolor.cprint("Bases:", 'green', end="")
+termcolor.cprint("Bases: ", 'green', end="")
 print(response['seq'])

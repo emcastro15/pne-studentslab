@@ -1,12 +1,13 @@
 import http.client
 import json
 import termcolor
-from e2 import genes
+from genes_dict import genes
+from Seq1 import *
 
 gene_name = input("Write the gene name:")
 
 SERVER = 'rest.ensembl.org'
-ENDPOINT = f'/sequence/id/{genes["MIR633"]}' # ENSG00000207552
+ENDPOINT = f'/sequence/id/{genes[gene_name]}'
 PARAMS = '?content-type=application/json'
 URL = SERVER + ENDPOINT + PARAMS
 
@@ -38,9 +39,20 @@ data1 = r1.read().decode("utf-8")
 response = json.loads(data1)
 
 
-termcolor.cprint("Gene:", 'green', end="")
-print("MIR633")
-termcolor.cprint("Description:", 'green', end="")
+termcolor.cprint("Gene: ", 'green', end="")
+print(gene_name)
+termcolor.cprint("Description: ", 'green', end="")
 print(response['desc'])
-termcolor.cprint("Bases:", 'green', end="")
-print(response['seq'])
+
+seq = response['seq']
+s1 = Seq(seq)
+termcolor.cprint("Total length: ", 'green', end="")
+print(s1.len())
+bases_count = s1.count()
+print(bases_count)
+for base, count in bases_count.items():
+    percentage = round((count / s1.len()) * 100, 1)
+    termcolor.cprint(base, 'blue', end="")
+    print(f": {count} ({percentage}%)")
+termcolor.cprint("Most frequent base: ", 'green', end="")
+print(most_frequent_base(bases_count))
