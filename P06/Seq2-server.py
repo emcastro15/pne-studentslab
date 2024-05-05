@@ -62,7 +62,27 @@ class TestHandler(http.server.BaseHTTPRequestHandler):
             else:
                 sequence = f"Invalid gene name: {gene_name}"
             contents = read_html_file("html/gene.html").render(context={"gene_name": gene_name, "sequence": sequence})
-
+        elif resource.startswith("/operation"):
+            query = urlparse(self.path).query
+            params = parse_qs(query)
+            sequence = params.get('msg', [''])[0]
+            if "info" == params.get('operation', [''])[0]:
+                operation = "info"
+                s1 = Seq(sequence)
+                bases_length = s1.len()
+                bases_count = s1.count()
+                result = f"Total length: {bases_length}\n"
+                for key, value in bases_count.items():
+                    percentage = round((value / bases_length) * 100, 1)
+                    result += f"{key}: {value} ({percentage}%)\n"
+            elif "comp" == params.get('operation', [''])[0]:
+                operation = "comp"
+                s1 = Seq(sequence)
+                result = s1.complement()
+            elif "rev" == params.get('operation', [''])[0]:
+                s1 = Seq(sequence)
+                result = s1.reverse()
+            contents = read_html_file("html/operation.html").render(context={"sequence": sequence, "operation": operation, "result": result})
         else:
             # Server error page
             contents = Path('html/error.html').read_text()
