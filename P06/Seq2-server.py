@@ -2,7 +2,7 @@ import http.server
 import socketserver
 import termcolor
 from pathlib import Path
-import socket
+from urllib.parse import parse_qs, urlparse
 from Seq1 import *
 
 sequences = ["ATCGATCGAT", "CGATCGATCG", "GATCGATCGA", "ATCGATCGTA", "TCGATCGATC"]
@@ -34,9 +34,14 @@ class TestHandler(http.server.BaseHTTPRequestHandler):
         # Print the request line
         termcolor.cprint(self.requestline, 'green')
 
-        # Open the form1.html file
-        # Read the index from the file
-        contents = Path('html/1st-form.html').read_text()
+        resource = urlparse(self.path).path
+        if resource == "/":
+            contents = Path('html/index.html').read_text()
+        elif resource.startswith("/ping"):
+            contents = Path('html/ping.html').read_text()
+        else:
+            # Server error page
+            contents = Path('html/error.html').read_text()
 
         # Generating the response message
         self.send_response(200)  # -- Status line: OK!
@@ -79,7 +84,7 @@ with socketserver.TCPServer(("", PORT), Handler) as httpd:
 
 
 
-while True:
+"""while True:
     print("Waiting for Clients to connect")
 
     try:
@@ -144,5 +149,5 @@ while True:
                 response = f"Invalid gene name: {gene_name}"
             cs.send(response.encode())
             print(response)
-        cs.close()
+        cs.close()"""
 

@@ -31,7 +31,6 @@ class TestHandler(http.server.BaseHTTPRequestHandler):
             else:
                 query = urlparse(self.path).query
                 params = parse_qs(query)
-                print(params)
                 message = params.get('msg', [''])[0]
                 if 'chk' in params:
                     message = message.upper()
