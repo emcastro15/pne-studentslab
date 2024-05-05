@@ -10,19 +10,6 @@ gene_files = {
     'RNU6_269P': '../sequences/RNU6_269P.txt'
 }
 
-PORT = 8080
-IP = "127.0.0.1" # this IP address is local, so only requests from the same machine are possible
-
-ls = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
-ls.bind((IP, PORT))
-
-ls.listen()
-
-print("The server is configured!")
-
-ls.close()
-
 
 PORT = 8080
 IP = "127.0.0.1" # the IP address depends on the machine running the server

@@ -1,3 +1,7 @@
+import http.server
+import socketserver
+import termcolor
+from pathlib import Path
 import socket
 from Seq1 import *
 
@@ -10,32 +14,70 @@ gene_files = {
     'RNU6_269P': '../sequences/RNU6_269P.txt'
 }
 
+
+# Define the Server's port
 PORT = 8080
-IP = "127.0.0.1" # this IP address is local, so only requests from the same machine are possible
-
-ls = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
-ls.bind((IP, PORT))
-
-ls.listen()
-
-print("The server is configured!")
-
-ls.close()
 
 
-PORT = 8080
-IP = "127.0.0.1" # the IP address depends on the machine running the server
+# -- This is for preventing the error: "Port already in use"
+socketserver.TCPServer.allow_reuse_address = True
 
-ls = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-ls.bind((IP, PORT))
+# Class with our Handler. It is a called derived from BaseHTTPRequestHandler
+# It means that our class inherits all his methods and properties
+class TestHandler(http.server.BaseHTTPRequestHandler):
 
-ls.listen()
+    def do_GET(self):
+        """This method is called whenever the client invokes the GET method
+        in the HTTP protocol request"""
 
-print("The server is configured!")
+        # Print the request line
+        termcolor.cprint(self.requestline, 'green')
 
-print("A client has connected to the server!")
+        # Open the form1.html file
+        # Read the index from the file
+        contents = Path('html/1st-form.html').read_text()
+
+        # Generating the response message
+        self.send_response(200)  # -- Status line: OK!
+
+        # Define the content-type header:
+        self.send_header('Content-Type', 'text/html')
+        self.send_header('Content-Length', len(str.encode(contents)))
+
+        # The header is finished
+        self.end_headers()
+
+        # Send the response message
+        self.wfile.write(str.encode(contents))
+
+        return
+
+
+# ------------------------
+# - Server MAIN program
+# ------------------------
+# -- Set the new handler
+Handler = TestHandler
+
+# -- Open the socket server
+with socketserver.TCPServer(("", PORT), Handler) as httpd:
+
+    print("Serving at PORT", PORT)
+
+    # -- Main loop: Attend the client. Whenever there is a new
+    # -- clint, the handler is called
+    try:
+        httpd.serve_forever()
+    except KeyboardInterrupt:
+        print("")
+        print("Stopped by the user")
+        httpd.server_close()
+
+
+
+
+
 
 while True:
     print("Waiting for Clients to connect")
