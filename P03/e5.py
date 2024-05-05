@@ -7,5 +7,6 @@ PORT = 8080
 c = Client(IP, PORT)
 print(c)
 
-print(c.talk("PING"))
+msg = "REV AACCGTA"
 
+print(c.talk(msg))

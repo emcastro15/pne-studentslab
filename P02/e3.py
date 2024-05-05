@@ -2,8 +2,8 @@ from client0 import Client
 
 
 # -- Parameters of your server
-IP = "212.128.255.76"
-PORT = 8081
+IP = "192.168.1.18"
+PORT = 8080
 
 c = Client(IP, PORT)
 # -- Send a message to the server

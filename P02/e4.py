@@ -1,19 +1,21 @@
 from client0 import Client
-from seq1
+from Seq1 import *
 
 
 # -- Parameters of your server
-IP = "212.128.255.76"
-PORT = 8081
+IP = "192.168.1.18"
+PORT = 8080
 
 c = Client(IP, PORT)
 
 
 # -- Send a message to the server
-s1 = Seq()
-s1.read_fasta("../sequences/U5.txt")
+s = Seq()
+s.read_fasta("../sequences/U5.txt")
 
-print("Sending a message to the server...")
-response = c.talk("Testing!!!")
-print(f"Response: {response}")
-
+response1 = c.talk("Sending the U5 gene to the server...")
+print("To Server: Sending the U5 gene to the server...")
+print(f"From Server: {response1}")
+response2 = c.talk(str(s))
+print(f"To Server: {str(s)}")
+print(f"From Server: {response2}")

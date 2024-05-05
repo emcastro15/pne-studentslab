@@ -7,5 +7,6 @@ PORT = 8080
 c = Client(IP, PORT)
 print(c)
 
-print(c.talk("PING"))
-
+for i in range(5):
+    msg = f"GET {i}"
+    print(c.talk(msg))
