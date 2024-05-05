@@ -4,6 +4,7 @@ import termcolor
 from pathlib import Path
 from urllib.parse import parse_qs, urlparse
 from Seq1 import *
+import jinja2 as j
 
 sequences = ["ATCGATCGAT", "CGATCGATCG", "GATCGATCGA", "ATCGATCGTA", "TCGATCGATC"]
 gene_files = {
@@ -15,9 +16,14 @@ gene_files = {
 }
 
 
+def read_html_file(filename):
+    contents = Path(filename).read_text()
+    contents = j.Template(contents)
+    return contents
+
+
 # Define the Server's port
 PORT = 8080
-
 
 # -- This is for preventing the error: "Port already in use"
 socketserver.TCPServer.allow_reuse_address = True
@@ -39,6 +45,24 @@ class TestHandler(http.server.BaseHTTPRequestHandler):
             contents = Path('html/index.html').read_text()
         elif resource.startswith("/ping"):
             contents = Path('html/ping.html').read_text()
+        elif resource.startswith("/get"):
+            query = urlparse(self.path).query
+            params = parse_qs(query)
+            number = params.get('n', [''])[0]
+            sequence = sequences[int(number)]
+            contents = read_html_file("html/get.html").render(context={"number": number, "sequence": sequence})
+        elif resource.startswith("/gene"):
+            query = urlparse(self.path).query
+            params = parse_qs(query)
+            gene_name = params.get('gene_name', [''])[0]
+            if gene_name in gene_files:
+                s1 = Seq()
+                sequence = s1.read_fasta(gene_files[gene_name])
+                print(sequence)
+            else:
+                sequence = f"Invalid gene name: {gene_name}"
+            contents = read_html_file("html/gene.html").render(context={"gene_name": gene_name, "sequence": sequence})
+
         else:
             # Server error page
             contents = Path('html/error.html').read_text()
@@ -67,7 +91,6 @@ Handler = TestHandler
 
 # -- Open the socket server
 with socketserver.TCPServer(("", PORT), Handler) as httpd:
-
     print("Serving at PORT", PORT)
 
     # -- Main loop: Attend the client. Whenever there is a new
@@ -78,11 +101,6 @@ with socketserver.TCPServer(("", PORT), Handler) as httpd:
         print("")
         print("Stopped by the user")
         httpd.server_close()
-
-
-
-
-
 
 """while True:
     print("Waiting for Clients to connect")
@@ -150,4 +168,3 @@ with socketserver.TCPServer(("", PORT), Handler) as httpd:
             cs.send(response.encode())
             print(response)
         cs.close()"""
-
