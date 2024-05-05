@@ -80,6 +80,7 @@ class TestHandler(http.server.BaseHTTPRequestHandler):
                 s1 = Seq(sequence)
                 result = s1.complement()
             elif "rev" == params.get('operation', [''])[0]:
+                operation = "rev"
                 s1 = Seq(sequence)
                 result = s1.reverse()
             contents = read_html_file("html/operation.html").render(context={"sequence": sequence, "operation": operation, "result": result})
