@@ -34,9 +34,9 @@ def get_species(limit=None):
 
 
 def get_karyotype(species):
-    species = species.replace(' ', '+')
+    species_encoded = species.replace(' ', '%20')
     SERVER = 'rest.ensembl.org'
-    ENDPOINT = f'/info/assembly/{species}'
+    ENDPOINT = f'/info/assembly/{species_encoded}'
     PARAMS = '?content-type=application/json'
     conn = http.client.HTTPConnection(SERVER)
     conn.request("GET", ENDPOINT + PARAMS)
@@ -51,8 +51,9 @@ def get_karyotype(species):
 
 
 def get_chromosome_length(species, chromo):
+    species_encoded = species.replace(' ', '%20')
     SERVER = 'rest.ensembl.org'
-    ENDPOINT = f'/info/assembly/{species}'
+    ENDPOINT = f'/info/assembly/{species_encoded}'
     PARAMS = '?content-type=application/json'
     conn = http.client.HTTPConnection(SERVER)
     conn.request("GET", ENDPOINT + PARAMS)
