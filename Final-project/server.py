@@ -25,7 +25,17 @@ def get_species(limit=None):
         return []
     data1 = r1.read().decode("utf-8")
     response = json.loads(data1)
-    species_list = [species['display_name'] for species in response['species']]
+    # species_list = [species['display_name'] for species in response['species']]
+    species_list = []
+    for species in response:
+        species_list.append(species['display_name'])
+        """if 'display_name' in species:
+            species_list.append(species['display_name'])
+        else:
+            species_list.append('') 
+            # this is not really necessary but just in case
+            # there is a species in response without a display name"""
+
     all_species = species_list
     if limit:
         species_list = species_list[:limit]
