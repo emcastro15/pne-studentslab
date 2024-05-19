@@ -6,6 +6,7 @@ from urllib.parse import parse_qs, urlparse
 import http.client
 import json
 import jinja2 as j
+from Seq1 import *
 
 
 def read_html_file(filename):
@@ -67,10 +68,10 @@ def get_chromosome_length(species, chromo):
     return None
 
 
-def get_gene_sequence(gene):
+def get_gene_id(gene):
     SERVER = 'rest.ensembl.org'
-    ENDPOINT = f'/sequence/id/{gene}'
-    PARAMS = '?content-type=application/json'
+    ENDPOINT = f'/lookup/symbol/homo_sapiens/{gene}'
+    PARAMS = '?expand=1;content-type=application/json'
     conn = http.client.HTTPConnection(SERVER)
     conn.request("GET", ENDPOINT + PARAMS)
     r1 = conn.getresponse()
@@ -78,8 +79,57 @@ def get_gene_sequence(gene):
         return None
     data1 = r1.read().decode("utf-8")
     response = json.loads(data1)
-    sequence = response.get('seq', None)
+    if 'error' in response:
+        return None
+    gene_id = response['id']
+    return gene_id
+
+
+def get_gene_sequence(gene_id):
+    # Now we get the sequence using the gene ID
+    SERVER = 'rest.ensembl.org'
+    SEQ_ENDPOINT = f'/sequence/id/{gene_id}'
+    SEQ_PARAMS = '?content-type=application/json'
+    conn = http.client.HTTPConnection(SERVER)
+    conn.request("GET", SEQ_ENDPOINT + SEQ_PARAMS )
+    r2 = conn.getresponse()
+    if r2.status != 200:
+        return None
+    data2 = r2.read().decode("utf-8")
+    sequence_response = json.loads(data2)
+    sequence = sequence_response.get('seq', None)
     return sequence
+
+
+def get_gene_info(gene):
+    SERVER = 'rest.ensembl.org'
+    ENDPOINT = f'/lookup/symbol/homo_sapiens/{gene}'
+    PARAMS = '?expand=1;content-type=application/json'
+    conn = http.client.HTTPConnection(SERVER)
+    conn.request("GET", ENDPOINT + PARAMS)
+    r1 = conn.getresponse()
+    if r1.status != 200:
+        return None
+    data1 = r1.read().decode("utf-8")
+    response = json.loads(data1)
+    if 'error' in response:
+        return None
+    gene_id = response['id']
+    start = response['start']
+    end = response['end']
+    length = response['end'] - response['start'] + 1
+    name = response['display_name']
+    return gene_id, start, end, length, name
+
+
+def calculate_gene_info(sequence):
+    # Use Seq class methods to perform calculations
+    length = sequence.len()
+    count_bases = sequence.count()
+    percentages = {}
+    for base, count in count_bases.items():
+        percentages[base] = f"{(count / length) * 100}%"
+    return length, percentages
 
 
 # Define the Server's port
@@ -154,8 +204,54 @@ class TestHandler(http.server.BaseHTTPRequestHandler):
                         "chromosome_length": chromosome_length
                     }
                 )
+        elif resource.startswith("/geneSeq"):
+            gene = params.get('gene', [''])[0]
+            gene_id = get_gene_id(gene)
+            sequence = get_gene_sequence(gene_id)
+            if sequence is None:
+                contents = Path('html/error.html').read_text()
+            else:
+                contents = read_html_file('html/geneSeq.html').render(
+                    context={
+                        "gene": gene,
+                        "sequence": sequence
+                    }
+                )
+        elif resource.startswith("/geneInfo"):
+            gene = params.get('gene', [''])[0]
+            gene_id, start, end, length, name = get_gene_info(gene)
+            if gene_id is None:
+                contents = Path('html/error.html').read_text()
+            else:
+                contents = read_html_file('html/geneInfo.html').render(
+                    context={
+                        "name": name,
+                        "gene_id": gene_id,
+                        "start": start,
+                        "end": end,
+                        "length": length,
+                    }
+                )
+        elif resource.startswith("/geneCalc"):
+            gene = params.get('gene', [''])[0]
+            gene_id = get_gene_id(gene)
+            sequence = get_gene_sequence(gene_id)
+            if sequence is None:
+                contents = Path('html/error.html').read_text()
+            else:
+                # Perform calculations using Seq class methods
+                seq_obj = Seq(sequence)
+                length, percentages = calculate_gene_info(seq_obj)
+                contents = read_html_file('html/geneCalc.html').render(
+                    context={
+                        "gene": gene,
+                        "length": length,
+                        "percentages": percentages
+                    }
+                )
         else:
             contents = Path('html/error.html').read_text()
+
         # Generating the response message
         self.send_response(200)  # -- Status line: OK!
 
