@@ -113,7 +113,6 @@ class TestHandler(http.server.BaseHTTPRequestHandler):
             )
         elif resource.startswith("/karyotype"):
             species = params.get('species', [''])[0]
-            print(species)
             karyotype = get_karyotype(species)
             if karyotype is None:
                 contents = Path('html/error.html').read_text()
@@ -142,6 +141,7 @@ class TestHandler(http.server.BaseHTTPRequestHandler):
                 )
         else:
             contents = Path('html/error.html').read_text()
+
         # Generating the response message
         self.send_response(200)  # -- Status line: OK!
 
