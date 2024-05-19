@@ -67,6 +67,21 @@ def get_chromosome_length(species, chromo):
     return None
 
 
+def get_gene_sequence(gene):
+    SERVER = 'rest.ensembl.org'
+    ENDPOINT = f'/sequence/id/{gene}'
+    PARAMS = '?content-type=application/json'
+    conn = http.client.HTTPConnection(SERVER)
+    conn.request("GET", ENDPOINT + PARAMS)
+    r1 = conn.getresponse()
+    if r1.status != 200:
+        return None
+    data1 = r1.read().decode("utf-8")
+    response = json.loads(data1)
+    sequence = response.get('seq', None)
+    return sequence
+
+
 # Define the Server's port
 PORT = 8080
 
